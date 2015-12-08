@@ -6,160 +6,132 @@
     <link rel="stylesheet" href="css/style.css">
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
     
-    <!--script>
-        function GetRadioValue(RadioName){  
-            var obj=document.getElementsByName(RadioName);   
-            var returnValue = "";
-            if(obj!=null){   
-                for(var i=0;i<obj.length;i++){   
-                    if(obj[i].checked){   
-                        returnValue = obj[i].value;               
-                    }   
-                }   
-            }   
-            return returnValue;   
-        }
-    
-    </script-->
-     <script src="http://apps.bdimg.com/libs/angular.js/1.3.9/angular.min.js"></script>
+<script src="http://apps.bdimg.com/libs/angular.js/1.3.9/angular.min.js"></script>
     <script type="text/javascript" src="js/calculate.js"></script>
 </head>
-<body>
+<body class="caculator">
 
     <div class="caculator_container" ng-app="myApp" ng-controller="myCtrl">
-        <form action="caculator.php" method="get">
-            <div class="system" >
-            Roof Systems
-                <br />
-                <input type="radio" ng-model="roofSystem" value="tile"> Tile Roof
+    <div ng-show="formVisible">
+        <form class="c_form" >
+            <div class="form_left" >
+                <div class="c_title">Roof Systems</div>
+                <input type="radio" ng-model="roofSystem" value="tile" selected="selected"> Tile Roof
                 <br/>
                 <input type="radio" ng-model="roofSystem" value="tin"/> Pitched Tin Roof
                 <br/>
                 <input type="radio" ng-model="roofSystem" value="flat"/> Pitched Flat Roof
-            </div>
             
-            <div class="option">
-                Wind Region:
-                <select id="windRegion" ng-model="windRegion">
-                    <option value="a">A</option>
+                <div class="c_title">Wind Region:</div>
+                <select class="c_text" ng-model="windRegion">
+                    <option value="a" selected="selected">A</option>
                     <option value="b">B</option>
                     <option value="c">C</option>
                     <option value="d">D</option>
                 </select>
-                <br/>
-                Roof Height:
-                <input id="height" type="number" ng-model="height" value="5">mm
-                <br/>
-                Width of Panel:
-                <input id="width" type="number" ng-model="width" value="808">mm
-                <br/>
-                Thickness of Panel:
-                <input id="thick" type="number" ng-model="thick" value="35">mm
-                <br/>
-                Power of Single Panel:
-                <input id="power" type="number" ng-model="power" value="190">w
-                <br/>
-                Total Number of Panels:
-                <input id="number" type="number" ng-model="number" value="1">
-                <br/>
-                Number of Rows:
-                <input id="row" type="number" ng-model="row" value="1">
-                <br/>
+                <div class="c_title">Wind Region:</div>
+                <select class="c_text" ng-model="railLength">
+                    <option value=3400>3400mm</option>
+                    <option value=4200 selected>4200mm</option>
+                </select>
             </div>
-                
+            <ul class="form_right" >
+                <li>
+                    <div class="c_title">Roof Height:</div>
+                    <input id="height" type="number" ng-model="height" value="5">mm
+                </li>
+                <li>
+                    <div class="c_title">Width of Panel:</div>
+                    <input id="width" type="number" ng-model="width" value="808">mm
+                </li>
+                <li>
+                    <div class="c_title">Thickness of Panel:</div>
+                    <input id="thick" type="number" ng-model="thick" value="35">mm
+                </li>
+                <li>
+                    <div class="c_title">Power of Single Panel:</div>
+                    <input id="power" type="number" ng-model="power" value="190">w
+                </li>
+                <li>
+                    <div class="c_title">Total Number of Panels:</div>
+                    <input id="number" type="number" ng-model="number" value="1">
+                </li>
+                <li>
+                <div class="c_title">Number of Rows:</div>
+                <input id="row" type="number" ng-model="row" value="1">
+                </li>
+            </ul>
+            <button class="submit" ng-click="showRows()">NEXT</button>
+        </form>
+        <hr>
             <div class="calcu">
-            <hr>
                 {{errorMessage}}<br />
                 Reccommed Bracket Span: {{space()}}mm
                 <br/>
-                Total Output Power of System: {{totalPower()}}kw
-                <hr>
+                Total Output Power of System: {{totalPower()}}kw    
             </div>
+            row:{{row}}<br/>   
+            tempRow:{{tempRow}}<br/>
+            trowlen:{{rowlen}}<br/>
+            rows:{{rows()}}<br/>
+            rows[0]:{{rows()[0]}}<br/>
+            rows[1]:{{rows()[1]}}<br/>
+            railLength:{{railLength}}<br/>
+        firstL:{{firstL()}}
+        <hr>
+    </div>
+    <div ng-show="rowsVisible">
             <div class="planingRow">
                     Planning the Array:
                 <ul>
-                    <li data-ng-repeat="x in rows">
-                        {{ x }}<input id="row" type="number" value="0">
-                      
+                    <li ng-repeat="(i, row) in rows() track by $index">
+                        <input type="number" ng-model=rows()[i]>
                     </li>
-                </ul>
-                    
+                </ul>  
             </div>
-                
-            <input type="submit" value="Next">
-            <br/>
-            Roof_systems:{{roof_systems + " xxx"}}<br/>
-            Height: {{height}}
-                
-        </form>
+    <div 
     
+        <hr>
+    <div ng-show="resultVisible">
+        <div class="result-block" >
+            <div class="result-title_block">
+                <div class="result-title">Calculate parts</div>
+                <div class="result-title">Aleady have parts</div>
+                <div class="result-title">Order Qty</div>
+            </div>
+            <ul>
+                <li>
+                    <div class=".c_title">Rail: {{result.rail() | number:0}}</div>
+                    <input class="result_c2" type="number" ng-model="resulte.rail"> 
+                    <div class="result_c3">{{resultf.rail | number:0}}</div>
+                </li>
+                <li>
+                    <div class=".c_title">Mid Clamp: {{result.mid_clamp() | number:0}}</div>
+                    <input class="result_c2" type="number" ng-model="resulte.mid_clamp" value="0"> 
+                    <div class="result_c3">{{resultf.mid_clamp() | number:0}}</div>
+                </li>
+                <li>
+                    <div class=".c_title">Splicer: {{result.splicer() | number:0}}</div>
+                    <input class="result_c2" type="number" ng-model="resulte.splicer"> <div class="result_c3">{{resultf.splicer | number:0}}</div>
+                </li>
+                <li>
+                    <div class=".c_title">Tile Hook: {{result.tile_hook() | number:0}}</div>
+                    <input class="result_c2" type="number" ng-model="resulte.tile_hook"> <div class="result_c3">{{resultf.tile_hook | number:0}}</div>
+                </li>               
+                <li>
+                    <div class=".c_title">L-Feet: {{result.l_feet() | number:0}}</div>
+                    <input class="result_c2" type="number" ng-model="resulte.l_feet"> <div class="result_c3">{{resultf.l_feet | number:0}}</div>
+                </li>
+                <li>
+                    <div class=".c_title">Flat Roof: {{result.flat_roof() | number:0}}</div>
+                    <input class="result_c2" type="number" ng-model="resulte.flat_roof"> <div class="result_c3">{{resultf.flat_roof | number:0}}</div>
+                </li>
+            </ul>
+        </div>
     </div>
+</div>
    
 </body>
 
 </html>
-<!--script>
-                    var space = 0;
-                    var windRegion = $("#windRegion").val();
-                    var roofSystem = GetRadioValue("GetRadioValue");
-                    var height = $("#height").val();
-                    var errorMessage;
-                    switch (roofSystem){
-                        case "tile":
-                            switch (windRegion){
-                                case "a":
-                                    if(height>0 & height<7.5){
-                                        space = 1400;
-                                    }else if(height < 12.5){
-                                        space = 1340;
-                                    }else if(height <=12.5){
-                                        space = 1300;
-                                    }else{
-                                        errorMessage="height should greater than 0";
-                                    };
-                                    break;
-                                case "b":
-                                    if(height>0 & height<7.5){
-                                        space = 1050;
-                                    }else if(height < 12.5){
-                                        space = 980;
-                                    }else if(height <=12.5){
-                                        space = 920;
-                                    }else{
-                                        errorMessage="height should greater than 0";
-                                    };
-                                    break;
-                                case "c":
-                                    if(height>0 & height<7.5){
-                                        space = 720;
-                                    }else if(height < 12.5){
-                                        space = 700;
-                                    }else if(height <=12.5){
-                                        space = 680;
-                                    }else{
-                                        errorMessage="height should greater than 0";
-                                    };
-                                    break;
-                                case "d:
-                                    if(height>0 & height<7.5){
-                                        space = 500;
-                                    }else if(height < 12.5){
-                                        space = 500;
-                                    }else if(height <=12.5){
-                                        space = 500;
-                                    }else{
-                                        errorMessage="height should greater than 0";
-                                    };
-                                    break;
-                            }
-                            break;
-                        case "tin":
-                            b;
-                            break;
-                        case "flat":
-                            c;
-                            break;   
-                    }
-                    document.write ("Recommend Bracket Span: " + space + "  mm" + "<br />");
-                
-                </script-->
+
