@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>MSS Service</title>
-    <link rel="stylesheet" href="style.css">
-    <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>MSS Service</title>
+        <link rel="stylesheet" href="css/style.css">
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+    <!--script src="http://apps.bdimg.com/libs/angular.js/1.3.9/angular.min.js"></script-->
+     <!--script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.min.js"></script-->
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript" src="js/calculate.js"></script>
     
-<!--script src="http://apps.bdimg.com/libs/angular.js/1.3.9/angular.min.js"></script-->
- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.min.js"></script>
-<script type="text/javascript" src="calculate.js"></script>
 </head>
 <body class="caculator">
     <div class="caculator_container" ng-app="myApp" ng-controller="myCtrl">
@@ -141,7 +143,7 @@
         <div class="o_rows">
                 <ul>
                     <li ng-repeat="(i, row) in rows() track by $index">
-                        <div class="o_row_title">Row {{i ＋ 1}}</div>
+                        <div class="o_row_title">Row {{i + 1}}</div>
                         <div class="o_row_num">{{rows()[i]}}</div>
                     </li>
                 </ul>  
@@ -157,7 +159,7 @@
                         <div class="list_qty">Qty</div>
                         <div class="list_kit">Kit</div>
                     </li>
-                    <li ng-repeat="(key, value) in result | orderBy: -no" >
+                    <li ng-repeat="(key, value) in result" >
                         <div class="list_no">{{value.no}}</div>
                         <div class="list_Ino">{{value.item_no}}</div>
                         <div class="list_name">{{value.item_name}}</div>
@@ -166,7 +168,7 @@
                         <div class="list_kit">{{value.kitsQty()}}</div>
                     </li>
                 </ul>
-        </div>
+        </div-->
         
     </div>
 </div>

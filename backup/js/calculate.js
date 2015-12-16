@@ -7,6 +7,7 @@ app.controller('myCtrl',function ($scope){
     $scope.formVisible = true;
     $scope.rowsVisible = false;
     $scope.resultVisible = false;
+    $scope.orderVisible = true;
     $scope.roofSystem='Title';
     $scope.windthRegion="a";
     $scope.railLength=null;
@@ -14,8 +15,9 @@ app.controller('myCtrl',function ($scope){
     $scope.width=808;
     $scope.thick=35;
     $scope.power=190;
-    $scope.number=1;
+    $scope.number=4;
     $scope.row=1;
+    
     $scope.rows=function(){
         return $scope.changeLines();
     };

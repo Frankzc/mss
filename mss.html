@@ -1,16 +1,14 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>MSS Service</title>
-        <link rel="stylesheet" href="css/style.css">
-        <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
-
-    <!--script src="http://apps.bdimg.com/libs/angular.js/1.3.9/angular.min.js"></script-->
-     <!--script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.min.js"></script-->
-    <script type="text/javascript" src="js/angular.min.js"></script>
-    <script type="text/javascript" src="js/calculate.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>MSS Service</title>
+    <link rel="stylesheet" href="style.css">
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
     
+<!--script src="http://apps.bdimg.com/libs/angular.js/1.3.9/angular.min.js"></script-->
+ <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.min.js"></script>
+<script type="text/javascript" src="calculate.js"></script>
 </head>
 <body class="caculator">
     <div class="caculator_container" ng-app="myApp" ng-controller="myCtrl">
@@ -40,27 +38,27 @@
             <ul class="form_right" >
                 <li>
                     <div class="c_title">Roof Height:</div>
-                    <input id="height" type="number" ng-model="height" value="5">mm
+                    <input id="height" type="number" ng-model="height" value="5" min="0" max="1000" integer>mm
                 </li>
                 <li>
                     <div class="c_title">Width of Panel:</div>
-                    <input id="width" type="number" ng-model="width" value="808">mm
+                    <input id="width" type="number" ng-model="width" value="808" min="0" integer>mm
                 </li>
                 <li>
                     <div class="c_title">Thickness of Panel:</div>
-                    <input id="thick" type="number" ng-model="thick" value="35">mm
+                    <input id="thick" type="number" ng-model="thick" value="35" min="0" max="100" integer>mm
                 </li>
                 <li>
                     <div class="c_title">Power of Single Panel:</div>
-                    <input id="power" type="number" ng-model="power" value="190">w
+                    <input id="power" type="number" ng-model="power" value="190" min="0" max="1000" integer>w
                 </li>
                 <li>
                     <div class="c_title">Total Number of Panels:</div>
-                    <input id="number" type="number" ng-model="number" value="1">
+                    <input id="number" type="number" ng-model="number" value="4" min="0" integer>
                 </li>
                 <li>
                 <div class="c_title">Number of Rows:</div>
-                <input id="row" type="number" ng-model="row" value="1">
+                <input id="row" type="number" ng-model="row" value="1" min="0" max={{number}} integer>
                 </li>
             </ul>
             <button class="submit" ng-click="showRows()">NEXT</button>
@@ -80,11 +78,12 @@
                     Planning the Array:
                 <ul>
                     <li ng-repeat="(i, row) in rows() track by $index">
-                        Row{{i + 1}}: <input type="number" ng-model=rows()[i]>
+                        Row{{i + 1}}: <input type="number" ng-model=rows()[i] min="0" max={{number}}>
                     </li>
-                </ul>  
+                </ul>
+                <button class="submit" ng-click="showResult()">Show Order Qty</button>
             </div>
-        <button class="submit" ng-click="showResult()">Show Order Qty</button>
+        
     </div> 
         
     <div ng-show="resultVisible">
@@ -104,7 +103,10 @@
             </ul>
             <button class="submit" ng-click="printOrder()">print</button>
         </div>
+        <hr>
     </div>
+    <!--        +++++++++ print part ++++++++++++++   -->
+<div ng-show="orderVisible">
     <div id="order">
         <div class="o_title"> Roof Mounting System Design Tools</div>
         <table class="o_select">
@@ -143,7 +145,7 @@
         <div class="o_rows">
                 <ul>
                     <li ng-repeat="(i, row) in rows() track by $index">
-                        <div class="o_row_title">Row {{i ＋ 1}}</div>
+                        <div class="o_row_title">Row {{i + 1}}</div>
                         <div class="o_row_num">{{rows()[i]}}</div>
                     </li>
                 </ul>  
@@ -159,7 +161,7 @@
                         <div class="list_qty">Qty</div>
                         <div class="list_kit">Kit</div>
                     </li>
-                    <li ng-repeat="(key, value) in result" >
+                    <li ng-repeat="(key, value) in result | orderBy: -no" >
                         <div class="list_no">{{value.no}}</div>
                         <div class="list_Ino">{{value.item_no}}</div>
                         <div class="list_name">{{value.item_name}}</div>
@@ -170,6 +172,7 @@
                 </ul>
         </div>
         
+    </div>
     </div>
 </div>
 </body>
