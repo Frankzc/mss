@@ -8,7 +8,9 @@
     
 <!--script src="http://apps.bdimg.com/libs/angular.js/1.3.9/angular.min.js"></script-->
  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.min.js"></script>
+    <script type="text/javascript" src="railLength.js"></script>
 <script type="text/javascript" src="calculate.js"></script>
+    
 </head>
 <body class="caculator">
     <div class="caculator_container" ng-app="myApp" ng-controller="myCtrl">
@@ -29,7 +31,7 @@
                     <option value="c">C</option>
                     <option value="d">D</option>
                 </select>
-                <div class="c_title">Wind Region:</div>
+                <div class="c_title">Rail Length:</div>
                 <select class="c_text" ng-model="railLength">
                     <option value=3400>3400mm</option>
                     <option value=4200 selected>4200mm</option>
@@ -38,27 +40,27 @@
             <ul class="form_right" >
                 <li>
                     <div class="c_title">Roof Height:</div>
-                    <input id="height" type="number" ng-model="height" value="5" min="0" max="1000" integer>mm
+                    <input id="height" type="number" ng-model="height"  min="0" max="1000" integer>mm
                 </li>
                 <li>
                     <div class="c_title">Width of Panel:</div>
-                    <input id="width" type="number" ng-model="width" value="808" min="0" integer>mm
+                    <input id="width" type="number" ng-model="width"  min="0" integer>mm
                 </li>
                 <li>
                     <div class="c_title">Thickness of Panel:</div>
-                    <input id="thick" type="number" ng-model="thick" value="35" min="0" max="100" integer>mm
+                    <input id="thick" type="number" ng-model="thick"  min="0" max="100" integer>mm
                 </li>
                 <li>
                     <div class="c_title">Power of Single Panel:</div>
-                    <input id="power" type="number" ng-model="power" value="190" min="0" max="1000" integer>w
+                    <input id="power" type="number" ng-model="power" min="0" max="1000" integer>w
                 </li>
                 <li>
                     <div class="c_title">Total Number of Panels:</div>
-                    <input id="number" type="number" ng-model="number" value="4" min="0" integer>
+                    <input id="number" type="number" ng-model="number"  min="0" integer>
                 </li>
                 <li>
                 <div class="c_title">Number of Rows:</div>
-                <input id="row" type="number" ng-model="row" value="1" min="0" max={{number}} integer>
+                <input id="row" type="number" ng-model="row"  min="0" max={{number}} integer>
                 </li>
             </ul>
             <button class="submit" ng-click="showRows()">NEXT</button>
@@ -125,8 +127,8 @@
             <tr>
                 <td>Width of Panel</td>
                 <td>{{width}}</td>
-                <td>numbe</td>
-                <td>{{}}Piece</td>
+                <td>number</td>
+                <td>{{number}}Piece</td>
             </tr>
             <tr>
                 <td>Thrichness of Panel</td>
@@ -138,14 +140,14 @@
                 <td>Power of Panel</td>
                 <td>{{power}}</td>
                 <td>Number of Rows</td>
-                <td>{{rows()}}</td>
+                <td>{{row}}</td>
             </tr>
         </table>
         
         <div class="o_rows">
                 <ul>
                     <li ng-repeat="(i, row) in rows() track by $index">
-                        <div class="o_row_title">Row {{i + 1}}</div>
+                        <div class="o_row_title" W>Row {{i + 1}}</div>
                         <div class="o_row_num">{{rows()[i]}}</div>
                     </li>
                 </ul>  

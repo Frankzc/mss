@@ -40,6 +40,8 @@
 }
 .form_right input{
     float:left;
+    width:150px;
+    height:15px;
 }
 .submit{
     float: right;
@@ -193,6 +195,7 @@
     float:left;
     height:3em;
     line-height:3em; 
+    text-align: center;
 }
 .o_list ul li div:nth-child(1){
     width:10%;

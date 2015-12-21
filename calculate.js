@@ -1,32 +1,83 @@
 
 var rows = [0];
-
 var app = angular.module('myApp', []);
-
-app.controller('myCtrl',function ($scope){
+app.controller('myCtrl' , function ($scope) {
     $scope.formVisible = true;
     $scope.rowsVisible = false;
     $scope.resultVisible = false;
-    $scope.roofSystem='Title';
-    $scope.windthRegion="a";
-    $scope.railLength=null;
-    $scope.height=5;
-    $scope.width=808;
-    $scope.thick=35;
-    $scope.power=190;
-    $scope.number=1;
-    $scope.row=1;
-    $scope.rows=function(){
-        return $scope.changeLines();
+    $scope.roofSystem = 'tile';
+    $scope.windthRegion = "a";
+    $scope.railLength = null;
+    $scope.height = 5;
+    $scope.width = 808;
+    $scope.thick = 35;
+    $scope.power = 190;
+    $scope.number = 1;
+    $scope.tempRow = [0];
+    //$scope.partsShow = true;
+    $scope.row = 1;
+    $scope.rows = function(){
+        if($scope.tempRow.length !== $scope.row ){
+                return $scope.changeLines();
+            }else{
+                return $scope.tempRow;
+            }
     };
-    $scope.errorMessage="";
+    $scope.errorMessage = "";
+    $scope.t = $scope.tempRow.length;
     
     // calculate total power 
    
     $scope.totalPower = function(){return ($scope.power * $scope.number)/1000 };
-   
-    // calculate the space  
     
+    $scope.fetchObj = function (fetchKey , obj) {
+         for (key in obj) {
+            if (key === fetchKey){
+                //var size = data.key.length;
+                return obj[key];
+            };
+        };
+        return false;
+    };
+    
+    $scope.space = function(){
+        var roofType = false;
+        if($scope.roofSystem != ""){
+            var roofType = $scope.fetchObj($scope.roofSystem, data);
+        };
+        
+        if (roofType){
+            var windRengion = $scope.fetchObj($scope.windthRegion, roofType);     
+            
+            
+            if( windRengion ){
+                   //return "hello";
+                    //return windRengion.length;
+                    for(i=0;i< windRengion.length; i++){
+                        var lower = windRengion[i].lower;
+                        var upper = windRengion[i].upper;
+                        var height = $scope.height;
+                        if(lower === null || (lower !== null && height >= lower ))
+                           {
+                                lower = true;
+                           };
+                        if(upper === null || (upper !== null && height <= upper ))
+                           {
+                                upper = true;
+                           };
+                        //console.log([upper, lower, input]);
+                        //console.log([upper === true, lower === true]);
+                        if(upper === true && lower === true){
+                            return windRengion[i].value;
+                        };
+                  };
+            };
+        };
+        return "error";
+                               
+    };
+
+    /*
     $scope.space = function(){
         switch ($scope.roofSystem){
             case "tile":
@@ -93,10 +144,14 @@ app.controller('myCtrl',function ($scope){
                 return "0"
         };
     };
-    $scope.tempRow = [1,1];
+    */
+    
 //四舍五入加
     $scope.roundup = function(num){
-        num = num - num % 1 + 1;
+        if(num !== 0){
+            num = num - num % 1 + 1;
+        }
+        
         return num;
     };
 //四舍五入减
@@ -105,6 +160,7 @@ app.controller('myCtrl',function ($scope){
         return num;
     };
 //这个方法是用于控制太阳能板行数的增减
+ /*  
     $scope.changeLines = function(){
         if($scope.tempRow.length != $scope.row){
             //var len = $scope.tempRow.lenght;
@@ -125,14 +181,74 @@ app.controller('myCtrl',function ($scope){
          return rows;
     };
     
+   */   
+        $scope.changeLines = function(){
+            //console.log("rows.length: " + tem.length);
+            console.log("scope.row: " + $scope.row);
+            var len = $scope.tempRow.length;
+            console.log("len: " + len);
+        if(len != $scope.row){
+            //var len = $scope.tempRow.lenght;
+            if(len > $scope.row)
+            {
+                var rowChange = [];
+                for(i=0; i<$scope.row; i++){
+                    rowChange[i] = $scope.tempRow[i];
+                    console.log("row change -: " + rowChange[i]);
+                };
+                rows = rowChange;
+            }else{
+                for(i = len; i < $scope.row; i++){
+                    $scope.tempRow[i] = 0;
+                    console.log("row change +: " + $scope.tempRow[i]);
+                };
+            }
+            //$scope.tempRow = rows;
+        };
+         return $scope.tempRow;
+         
+    };
+   
+    /*
+        $scope.changeLines = function(){
+            //console.log("rows.length: " + tem.length);
+            console.log("scope.row: " + $scope.row);
+            var len = $scope.tempRow.length;
+            console.log("tempRow.length: " + $scope.tempRow);
+        if(len === $scope.row){
+            //var len = $scope.tempRow.lenght;
+            if(len > $scope.row)
+            {
+                var rowChange = [];
+                for(i=0; i<$scope.row; i++){
+                    rowChange[i] = $scope.tempRow[i];
+                    console.log("row change -: " + rowChange[i]);
+                };
+                rows = rowChange;
+            }else{
+                for(i = len; i < $scope.row; i++){
+                    $scope.tempRow[i] = 0;
+                    console.log("row change +: " + $scope.tempRow[i]);
+                };
+            }
+            //$scope.tempRow = rows;
+        };
+         return $scope.tempRow;
+         
+    };
+    */
+    
     //计算公式，计算每行各种配件数量
     $scope.calcu = {
         //rail 单行计算， 输入行号减1
         rail: function(rowNum){
-            return 2*($scope.rows()[rowNum] * $scope.width + ($scope.rows()[rowNum] - 1) * 26 +80)/$scope.railLength;
+            //return 2*($scope.rows()[rowNum] * $scope.width + ($scope.rows()[rowNum] - 1) * 26 +80)/$scope.railLength;
+            return 2*($scope.tempRow[rowNum] * $scope.width + ($scope.tempRow[rowNum] - 1) * 26 +80)/$scope.railLength;
         },
         //tile_hook 单行计算， 输入行号减1
         tile_hook: function(rowNum){
+            console.log("rowNum: " + rowNum);
+            console.log("hook row result:" + $scope.roundup(($scope.calcu.rail(rowNum) * $scope.railLength / 2 - 500) / $scope.space()+1)*2);
             return $scope.roundup(($scope.calcu.rail(rowNum) * $scope.railLength / 2 - 500) / $scope.space()+1)*2;
         },
         //l_feet 单行计算， 输入行号减1
@@ -235,9 +351,11 @@ app.controller('myCtrl',function ($scope){
             name:"Tile Hook:",
             partsQty: function(){
                 var tile_hook_p = 0;
+                console.log("tile_hook_p 0: " + tile_hook_p);
                 for(i = 0; i < $scope.row; i++){
                     //tile hook 各行汇总计算公式
                     tile_hook_p += $scope.calcu.tile_hook(i);
+                    console.log("tile_hook_p: " + tile_hook_p);
                 };
                 return tile_hook_p;
             },
